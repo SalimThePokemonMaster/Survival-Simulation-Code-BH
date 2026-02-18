@@ -1,6 +1,6 @@
 package main.java;
 
-import main.java.components.Character;
+import main.java.components.Peasant;
 import main.java.components.House;
 import main.java.utilities.Coordinates;
 
@@ -16,7 +16,7 @@ public class Main {
         // add dans la map la maison
 
         House maison = new House(new Coordinates(10, 10));
-        List<Character> paysans = new ArrayList<>();
+        List<Peasant> paysans = new ArrayList<>();
 
         while (true) {
             // update maison
@@ -27,8 +27,8 @@ public class Main {
             }*/
 
             // update paysans
-            for (Character p : paysans) {
-                p.update(eatableToAggro);
+            for (Peasant p : paysans) {
+               // p.update(eatableToAggro);
             }
 
             // vitesse de la simulation

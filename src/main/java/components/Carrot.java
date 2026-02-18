@@ -1,10 +1,7 @@
 package main.java.components;
 
 import main.java.utilities.Coordinates;
-import main.java.utilities.Movable;
 import main.java.utilities.Wrapper;
-
-import java.util.List;
 
 public class Carrot extends Eatable {
 
@@ -12,10 +9,9 @@ public class Carrot extends Eatable {
     public Carrot(Coordinates coordinates){
         this.health = 1;
         this.coordinates = coordinates;
-        this.movable = Movable.FIXED;
     }
 
-    boolean eat(Character by) {
+    boolean eat(Peasant by) {
         if (isDead()) {
             return false;
         } else {
@@ -26,14 +22,9 @@ public class Carrot extends Eatable {
     }
 
     @Override
-    boolean reduceHealth(Character by) {
+    boolean reduceHealth(Peasant by) {
         reduce(1); //????? est ce que on garde ca ?
         return false;
-    }
-
-    @Override
-    void move(List<Eatable> allEatable,  List<Constituent> allConstituent) {
-        throw new IllegalArgumentException("A carrot can't move !");
     }
 
     @Override

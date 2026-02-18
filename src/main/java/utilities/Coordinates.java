@@ -10,6 +10,10 @@ public class Coordinates {
         this.y = y;
     }
 
+    public static Coordinates posOf(int x, int y){
+        return new Coordinates(x, y);
+    }
+
     public double distanceBetween(Coordinates that){
         return Math.sqrt(Math.pow(this.x - that.x,2) + Math.pow(this.y - that.y, 2));
     }
