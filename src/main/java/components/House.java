@@ -1,15 +1,15 @@
 package main.java.components;
 
 import main.java.utilities.Coordinates;
-import main.java.utilities.Wrapper;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
+import java.util.Set;
 
-public final class House extends Constituent {
-    int registered;
-    final int MAX_CAPACITY = 8;
+public final class House extends Element {
+    int registered = 0;
+    final int MAX_CAPACITY = 2;
     Deque<Peasant> sleeping;
 
     List<Coordinates> CONSTANT_SPAWNS =
@@ -30,51 +30,15 @@ public final class House extends Constituent {
         this.sleeping = new ArrayDeque<>();
     }
 
-    @Override
-    void update(Wrapper inf) {
-        switch (inf.period){
-            case HELIOS -> {
-                if(hasSleepers()){
-                    wakeEveryone();
-                }
-            }
-            case ARTEMIS -> {
-                if(isFulledWithSleepers()){
-
-                } else {
-
-                }
-            }
-        }
-
+    public boolean canGenerate(){
+        return registered < MAX_CAPACITY;
+    }
+    public Peasant generate(){
+        registered++;
+        return new Peasant(spawnPos(), this);
     }
 
-    public void enter(Peasant peasant){
-        peasant.sleep();
-        sleeping.push(peasant);
-    }
-
-    public void registeredDied(){
-        registered--;
-    }
-
-    public boolean isFullyRegistered(){
-        return registered == MAX_CAPACITY;
-    }
-
-    public boolean isFulledWithSleepers(){
-        return sleeping.size() == registered;
-    }
-
-    public boolean hasSleepers(){
-        return !sleeping.isEmpty();
-    }
-
-    private void wakeEveryone(){
-        int a = sleeping.size();
-        for(int i = 0; i < a; i++){
-            Peasant b = sleeping.pop();
-            b.awake(coordinates.translated(CONSTANT_SPAWNS.get(i)));
-        }
+    public Coordinates spawnPos(){
+        return coordinates.translated(0,1);
     }
 }

@@ -1,11 +1,9 @@
 package main.java.utilities;
 
-import main.java.components.Constituent;
-import main.java.components.Eatable;
+import main.java.components.eatable.Eatable;
 
-import java.util.List;
+import java.util.Set;
 
 public interface Movable {
-    public abstract void move(List<Eatable> allEatable, List<Constituent> allConstituent);
-
+    public abstract void move(Set<Eatable> allEatable);
 }

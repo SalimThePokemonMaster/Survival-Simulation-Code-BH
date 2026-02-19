@@ -1,11 +1,11 @@
-package main.java.components;
+package main.java.components.eatable;
 
+import main.java.components.Peasant;
 import main.java.utilities.Coordinates;
-import main.java.utilities.Wrapper;
+
+import java.util.Set;
 
 public class Carrot extends Eatable {
-
-
     public Carrot(Coordinates coordinates){
         this.health = 1;
         this.coordinates = coordinates;
@@ -23,12 +23,11 @@ public class Carrot extends Eatable {
 
     @Override
     boolean reduceHealth(Peasant by) {
-        reduce(1); //????? est ce que on garde ca ?
+        reduce(); //????? est ce que on garde ca ?
         return false;
     }
 
-    @Override
-    void update(Wrapper inf) {
-
+    public boolean canBeEaten() {
+        return !isDead();
     }
 }

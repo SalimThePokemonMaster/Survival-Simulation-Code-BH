@@ -1,16 +1,16 @@
 package main.java.components;
 
+import main.java.components.eatable.Eatable;
 import main.java.utilities.Coordinates;
-import main.java.utilities.Wrapper;
 
-public abstract class Constituent {
+import java.util.Set;
+
+public abstract class Element {
     public Coordinates coordinates;
     public int health;
 
-    abstract void update(Wrapper inf);
-
-    protected void reduce(int a){
-        health -= a ;
+    protected void reduce(){
+        health -= 1;
     }
 
     public boolean isDead(){
