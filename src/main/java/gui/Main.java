@@ -58,6 +58,19 @@ public final class Main extends Application {
                 mapGrid.add(tile, x, y);
             }
         }
+        Timeline timeline = getTimeline(panes);
+        timeline.play();
+
+        Scene scene = new Scene(mapGrid, 1000, 700);
+        scene.setFill(Color.rgb(193, 225, 193));
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("CodeBHSimulation");
+        primaryStage.setTitle("Map Example");
+        primaryStage.show();
+
+    }
+
+    private Timeline getTimeline(Group[][] panes) {
         House h1 = new House(new Coordinates(23, 16));
         House h2 = new House(new Coordinates(10, 10));
         Eatable e1 = new Carrot(Coordinates.posOf(25, 20));
@@ -75,16 +88,9 @@ public final class Main extends Application {
                 )
         );
         timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
-
-        Scene scene = new Scene(mapGrid, 1000, 700);
-        scene.setFill(Color.rgb(193, 225, 193));
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("CodeBHSimulation");
-        primaryStage.setTitle("Map Example");
-        primaryStage.show();
-
+        return timeline;
     }
+
     private void update(Group[][] cases, Game game){
         clear(cases);
         game.update();
@@ -116,12 +122,12 @@ public final class Main extends Application {
     }
     private Node getDrawing(Element x){
         return
-            switch (x) {
-                case Peasant p -> createPeasant();
-                case Carrot c -> createCarrot();
-                case House h -> createHouse();
-                default -> throw new IllegalStateException();
-            };
+                switch (x) {
+                    case Peasant p -> createPeasant();
+                    case Carrot c -> createCarrot();
+                    case House h -> createHouse();
+                    default -> throw new IllegalStateException();
+                };
     }
     private StackPane createTile() {
         Rectangle background = new Rectangle(TILE_SIZE, TILE_SIZE);
