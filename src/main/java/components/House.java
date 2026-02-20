@@ -1,6 +1,7 @@
 package main.java.components;
 
 import main.java.utilities.Coordinates;
+import main.java.utilities.InfGroup;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -40,5 +41,10 @@ public final class House extends Element {
 
     public Coordinates spawnPos(){
         return coordinates.translated(0,1);
+    }
+
+    @Override
+    protected void update(InfGroup inf) {
+
     }
 }

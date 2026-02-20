@@ -2,6 +2,7 @@ package main.java.components.eatable;
 
 import main.java.components.Peasant;
 import main.java.utilities.Coordinates;
+import main.java.utilities.InfGroup;
 
 import java.util.Set;
 
@@ -19,6 +20,11 @@ public class Carrot extends Eatable {
             if (isDead()) {}
             return isDead();
         }
+    }
+
+    @Override
+    public void update(InfGroup grp){
+
     }
 
     @Override

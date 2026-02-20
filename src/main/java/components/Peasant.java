@@ -22,6 +22,10 @@ public class Peasant extends Element implements Movable {
         this.eaten = 0;
     }
 
+    @Override
+    protected void update(InfGroup inf) {
+
+    }
 
     public void update(Set<Eatable> allEatable) {
         switch (state){
@@ -83,4 +87,6 @@ public class Peasant extends Element implements Movable {
             }
         }
     }
+
+
 }
