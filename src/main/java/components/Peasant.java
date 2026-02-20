@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 public class Peasant extends Element implements Movable {
     private CharacterState state;
     private int eaten;
-    private House myHouse;
+    private final House myHouse;
 
     public Peasant(Coordinates coordinates, House house){
         this.coordinates = coordinates;
@@ -24,6 +24,12 @@ public class Peasant extends Element implements Movable {
 
 
     public void update(Set<Eatable> allEatable) {
+        switch (state){
+            case NORMAL -> {}
+            case SLEEP -> {}
+            case IDLE -> {}
+            case DEAD -> {}
+        }
         move(allEatable);
     }
 
@@ -37,6 +43,7 @@ public class Peasant extends Element implements Movable {
                     return b;
                 }
             });
+
         if (targetO.isPresent()){
             Eatable target = targetO.get();
             if (target.coordinates.equals(coordinates)) {

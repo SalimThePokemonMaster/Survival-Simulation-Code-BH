@@ -1,9 +1,7 @@
 package main.java.components;
 
-import main.java.components.eatable.Eatable;
 import main.java.utilities.Coordinates;
-
-import java.util.Set;
+import main.java.utilities.Burger;
 
 public abstract class Element {
     public Coordinates coordinates;
@@ -16,4 +14,6 @@ public abstract class Element {
     public boolean isDead(){
         return health <= 0 ;
     }
+
+    abstract void update(Burger inf);
 }
