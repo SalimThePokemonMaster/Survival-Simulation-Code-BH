@@ -44,7 +44,7 @@ public final class House extends Element {
     }
 
     @Override
-    protected void update(InfGroup inf) {
+    public void update(InfGroup inf) {
 
     }
 }

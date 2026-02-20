@@ -23,7 +23,7 @@ public class Peasant extends Element implements Movable {
     }
 
     @Override
-    protected void update(InfGroup inf) {
+    public void update(InfGroup inf) {
 
     }
 

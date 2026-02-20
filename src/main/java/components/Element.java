@@ -16,5 +16,5 @@ public abstract class Element {
         return health <= 0 ;
     }
 
-    protected abstract void update(InfGroup inf);
+    public abstract void update(InfGroup inf);
 }
