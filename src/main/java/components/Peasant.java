@@ -3,11 +3,8 @@ package main.java.components;
 import main.java.components.eatable.Eatable;
 import main.java.utilities.*;
 
-import java.lang.annotation.Target;
 import java.util.Optional;
-import java.util.Random;
 import java.util.Set;
-import java.util.random.RandomGenerator;
 import java.util.stream.Stream;
 
 public class Peasant extends Element implements Movable {
@@ -22,9 +19,30 @@ public class Peasant extends Element implements Movable {
         this.eaten = 0;
     }
 
-    @Override
+    //@Override
     public void update(InfGroup inf) {
+        switch (state){
+            case NORMAL -> {
+                Optional<Eatable> targetO = target(inf.getAllEatable());
 
+                if (targetO.isPresent()){
+                    Eatable target = targetO.get();
+                    if (target.coordinates.equals(coordinates)) {
+                        eat(target);
+                    } else {
+                        rush(target.coordinates);
+                    }
+                } else {
+                    state = CharacterState.IDLE;
+                }
+
+            }
+            case SLEEP -> {}
+            case IDLE -> {
+               // if()
+            }
+            case DEAD -> {}
+        }
     }
 
     public void update(Set<Eatable> allEatable) {
@@ -37,18 +55,22 @@ public class Peasant extends Element implements Movable {
         move(allEatable);
     }
 
+    private Optional<Eatable> target(Set<Eatable> allEatable){
+        return allEatable.stream()
+                .reduce((a, b) -> {
+                    if (coordinates.distanceBetween(a.coordinates) <= coordinates.distanceBetween(b.coordinates)) {
+                        return a;
+                    } else {
+                        return b;
+                    }
+                });
+    }
+
     @Override
     public void move(Set<Eatable> allEatable) {
-        Optional<Eatable> targetO = allEatable.stream()//.map(e -> e.coordinates)
-            .reduce((a, b) -> {
-                if (coordinates.distanceBetween(a.coordinates) <= coordinates.distanceBetween(b.coordinates)) {
-                    return a;
-                } else {
-                    return b;
-                }
-            });
 
-        if (targetO.isPresent()){
+
+        /*if (targetO.isPresent()){
             Eatable target = targetO.get();
             if (target.coordinates.equals(coordinates)) {
                 eat(target);
@@ -57,11 +79,11 @@ public class Peasant extends Element implements Movable {
             }
         } else {
             rush(myHouse.coordinates);
-        }
+        }*/
     }
 
     public void eat(Eatable eatable){
-        eatable.reduce();
+        //eatable.reduce();
     }
 
     public void rush(Coordinates toGo){

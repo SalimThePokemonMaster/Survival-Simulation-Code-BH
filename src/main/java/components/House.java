@@ -43,7 +43,7 @@ public final class House extends Element {
         return coordinates.translated(0,1);
     }
 
-    @Override
+    //@Override
     public void update(InfGroup inf) {
 
     }

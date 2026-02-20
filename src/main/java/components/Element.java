@@ -6,15 +6,4 @@ import main.java.utilities.InfGroup;
 
 public abstract class Element {
     public Coordinates coordinates;
-    public int health;
-
-    protected void reduce(){
-        health -= 1;
-    }
-
-    public boolean isDead(){
-        return health <= 0 ;
-    }
-
-    public abstract void update(InfGroup inf);
 }

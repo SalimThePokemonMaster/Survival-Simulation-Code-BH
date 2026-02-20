@@ -22,7 +22,7 @@ public class Carrot extends Eatable {
         }
     }
 
-    @Override
+    //@Override
     public void update(InfGroup grp){
 
     }
