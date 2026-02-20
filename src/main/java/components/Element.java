@@ -1,7 +1,7 @@
 package main.java.components;
 
 import main.java.utilities.Coordinates;
-import main.java.utilities.Burger;
+import main.java.utilities.Group;
 
 public abstract class Element {
     public Coordinates coordinates;
@@ -15,5 +15,5 @@ public abstract class Element {
         return health <= 0 ;
     }
 
-    abstract void update(Burger inf);
+    abstract void update(Group inf);
 }

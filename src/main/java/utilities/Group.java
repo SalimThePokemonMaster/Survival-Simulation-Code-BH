@@ -5,7 +5,7 @@ import main.java.components.eatable.Eatable;
 
 import java.util.Set;
 
-public class Burger {
+public class Group {
     private Set<House> allHouses;
     private Set<Eatable> allEatable;
     private Period period;
@@ -26,13 +26,13 @@ public class Burger {
         this.period = period;
     }
 
-    public Burger(Set<House> allHouses, Set<Eatable> allEatable, Period period) {
+    public Group(Set<House> allHouses, Set<Eatable> allEatable, Period period) {
         this.allEatable = allEatable;
         this.allHouses = allHouses;
         this.period = period;
     }
 
-    public InfBurger toInfBurger(){
-        return new InfBurger(Set.copyOf(allHouses), Set.copyOf(allEatable), period);
+    public InfGroup toInfBurger(){
+        return new InfGroup(Set.copyOf(allHouses), Set.copyOf(allEatable), period);
     }
 }

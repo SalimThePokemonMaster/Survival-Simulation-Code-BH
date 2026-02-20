@@ -5,7 +5,7 @@ import main.java.components.eatable.Eatable;
 
 import java.util.Set;
 
-public class InfBurger {
+public class InfGroup {
     private Set<House> allHouses;
     private Set<Eatable> allEatable;
     private Period period;
@@ -22,7 +22,7 @@ public class InfBurger {
         return period;
     }
 
-    public InfBurger(Set<House> allHouses, Set<Eatable> allEatable, Period period) {
+    public InfGroup(Set<House> allHouses, Set<Eatable> allEatable, Period period) {
         this.allEatable = allEatable;
         this.allHouses = allHouses;
         this.period = period;
