@@ -4,5 +4,4 @@ public enum CharacterState {
     NORMAL,
     IDLE,
     SLEEP,
-    DEAD
 }

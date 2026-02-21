@@ -1,50 +1,68 @@
 package main.java.components;
 
 import main.java.utilities.Coordinates;
-import main.java.utilities.InfGroup;
-
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.List;
-import java.util.Set;
 
 public final class House extends Element {
-    int registered = 0;
-    final int MAX_CAPACITY = 2;
-    Deque<Peasant> sleeping;
+    private int peasantGenerated;
+    private int peasantEntered;
+    private int peasantHasEatenEnough;
+    private int toGenerateThisDay;
 
-    List<Coordinates> CONSTANT_SPAWNS =
-        List.of(
-            new Coordinates(1, 0),
-            new Coordinates(-1, 0),
-            new Coordinates(0, 1),
-            new Coordinates(0, -1),
-            new Coordinates(1,1),
-            new Coordinates(1, -1),
-            new Coordinates(-1, 1),
-            new Coordinates(-1, -1)
-        );
+    final int MAX_CAPACITY  = 10;
+
+    public House(Coordinates coordinates, int toGenerateThisDay){
+        this.coordinates = coordinates;
+        this.toGenerateThisDay = toGenerateThisDay;
+    }
 
     public House(Coordinates coordinates){
-        this.coordinates = coordinates;
-        this.registered = 0;
-        this.sleeping = new ArrayDeque<>();
+        this(coordinates, 2);
+    }
+
+    public boolean isEveryoneSleeping(){
+        return peasantEntered == peasantGenerated;
+    }
+
+    public void setToGenerateThisDay(int toGenerate){
+        toGenerateThisDay = toGenerate;
+        peasantEntered = 0;
+        peasantGenerated = 0;
+        peasantHasEatenEnough = 0;
     }
 
     public boolean canGenerate(){
-        return registered < MAX_CAPACITY;
+        return peasantGenerated < toGenerateThisDay && peasantGenerated < MAX_CAPACITY;
     }
+    
     public Peasant generate(){
-        registered++;
+        peasantGenerated++;
         return new Peasant(spawnPos(), this);
     }
 
-    public Coordinates spawnPos(){
+    public int getPeasantGenerated() {
+        return peasantGenerated;
+    }
+
+    public int getPeasantEntered() {
+        return peasantEntered;
+    }
+
+    public int getPeasantHasEatenEnough() {
+        return peasantHasEatenEnough;
+    }
+
+    public int getToGenerateThisDay() {
+        return toGenerateThisDay;
+    }
+
+    private Coordinates spawnPos(){
         return coordinates.translated(0,1);
     }
 
-    //@Override
-    public void update(InfGroup inf) {
 
+    public void enter(boolean hasEatenEnough){
+        peasantEntered++;
+        if(hasEatenEnough) peasantHasEatenEnough++;
     }
+
 }
