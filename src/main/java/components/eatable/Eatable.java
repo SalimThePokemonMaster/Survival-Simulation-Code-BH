@@ -1,13 +1,11 @@
 package main.java.components.eatable;
 
-import main.java.components.Element;
-import main.java.components.House;
-import main.java.utilities.Coordinates;
-import main.java.utilities.Utilities;
-
 import java.util.Set;
+import main.java.Game;
+import main.java.components.House;
+import main.java.components.Element;
+import main.java.utilities.Coordinates;
 import java.util.concurrent.ThreadLocalRandom;
-
 import static main.java.utilities.Preconditions.ensure;
 
 public abstract class Eatable extends Element {
@@ -18,9 +16,7 @@ public abstract class Eatable extends Element {
         return !hasNotBeenEaten() ;
     }
 
-    public boolean hasNotBeenEaten(){
-        return health > 0;
-    }
+    public boolean hasNotBeenEaten(){ return health > 0; }
 
     protected abstract int getMAX_HEALTH();
 
@@ -29,10 +25,10 @@ public abstract class Eatable extends Element {
         Coordinates c;
         boolean d;
         do{
-            a = ThreadLocalRandom.current().nextInt(0, Utilities.MAP_WIDTH);
-            b = ThreadLocalRandom.current().nextInt(0, Utilities.MAP_HEIGTH);
-            ensure(a >= 0 && a <= Utilities.MAP_WIDTH, "The X coordinate chosen for a carrot respawn is out of bound : " + a);
-            ensure(b >= 0 && b <= Utilities.MAP_HEIGTH, "The Y coordinate chosen for a carrot respawn is out of bound : " + b);
+            a = ThreadLocalRandom.current().nextInt(0, Game.COLUMNS);
+            b = ThreadLocalRandom.current().nextInt(0, Game.LINES);
+            ensure(a >= 0 && a <= Game.COLUMNS, "The X coordinate chosen for a carrot respawn is out of bound : " + a);
+            ensure(b >= 0 && b <= Game.LINES, "The Y coordinate chosen for a carrot respawn is out of bound : " + b);
             c = new Coordinates(a, b);
             Coordinates finalC = c;
             d = allHouses.stream().noneMatch(x -> x.getCoordinates().isSuperposed(finalC));

@@ -3,35 +3,39 @@ package main.java.components;
 import main.java.Game;
 import main.java.components.eatable.Eatable;
 import main.java.utilities.*;
-
 import java.util.Optional;
 import java.util.Set;
 
 public class Peasant extends Element implements Movable {
+    public enum CharacterState {
+        NORMAL,
+        IDLE,
+    }
+    // Constants
+    public final static int QUANTITY_TO_EAT = 2;
+
+    // Peasant track
     private CharacterState state;
     private int eaten;
     private final House myHouse;
     private boolean isAsleep;
 
-    public final static int QUANTITY_TO_EAT = 2;
 
     public Peasant(Coordinates coordinates, House house){
         this.coordinates = coordinates;
         this.state = CharacterState.NORMAL;
         this.myHouse = house;
-        this.eaten = 0;
-        this.isAsleep = false;
     }
 
     private Optional<Eatable> target(Set<Eatable> allEatable){
         return allEatable.stream()
-                .reduce((a, b) -> {
-                    if (coordinates.distanceTo(a.coordinates) <= coordinates.distanceTo(b.coordinates)) {
-                        return a;
-                    } else {
-                        return b;
-                    }
-                });
+            .reduce((a, b) -> {
+                if (coordinates.distanceTo(a.coordinates) <= coordinates.distanceTo(b.coordinates)) {
+                    return a;
+                } else {
+                    return b;
+                }
+            });
     }
 
     public void update(Set<Eatable> allEatable, Game.Period actualPeriod) {
@@ -40,10 +44,8 @@ public class Peasant extends Element implements Movable {
                 if(actualPeriod == Game.Period.HELIOS){
                     if(Math.random() > 0.2){
                         Optional<Eatable> targetO = target(allEatable);
-
                         if (targetO.isPresent()){
                             Eatable target = targetO.get();
-
                             if (target.coordinates.equals(coordinates)) {
                                 if(target.eat()){
                                     eaten++;
@@ -55,13 +57,10 @@ public class Peasant extends Element implements Movable {
                         } else {
                             state = CharacterState.IDLE;
                         }
-
                     } else {
                         state = CharacterState.IDLE;
                     }
-
                 } else {
-
                     if(myHouse.coordinates.equals(coordinates)){
                         myHouse.enter(hasEatenEnough());
                         isAsleep = true;
@@ -71,17 +70,11 @@ public class Peasant extends Element implements Movable {
 
                 }
             }
-            case IDLE -> {
-                state = CharacterState.NORMAL;
-            }
+            case IDLE -> state = CharacterState.NORMAL;
         }
     }
 
-    public boolean hasEatenEnough(){
-        return eaten >= QUANTITY_TO_EAT;
-    }
+    public boolean hasEatenEnough(){ return eaten >= QUANTITY_TO_EAT; }
 
-    public boolean isAsleep() {
-        return isAsleep;
-    }
+    public boolean isAsleep() { return isAsleep; }
 }

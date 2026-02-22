@@ -1,7 +1,7 @@
 package main.java.components;
 
+import main.java.Game;
 import main.java.utilities.Coordinates;
-import main.java.utilities.Utilities;
 
 import static main.java.utilities.Preconditions.ensure;
 import static main.java.utilities.Preconditions.require;
@@ -19,8 +19,8 @@ public final class House extends Element {
     private final Coordinates spawnPos;
 
     public House(Coordinates coordinates, int toGenerateThisDay){
-        require(coordinates.getX() >= 0 && coordinates.getX() <= Utilities.MAP_WIDTH);
-        require(coordinates.getY() > 0 && coordinates.getY() <= Utilities.MAP_HEIGTH);
+        require(coordinates.getX() >= 0 && coordinates.getX() <= Game.COLUMNS);
+        require(coordinates.getY() > 0 && coordinates.getY() <= Game.COLUMNS);
         this.coordinates = coordinates;
         this.toGenerateThisDay = toGenerateThisDay;
         this.spawnPos = coordinates.translated(0,1);
@@ -29,7 +29,6 @@ public final class House extends Element {
     public House(Coordinates coordinates){
         this(coordinates, DEFAULT_CREATION_GENERATED);
     }
-
 
     public int getPeasantEntered() {
         return peasantEntered;
@@ -60,8 +59,6 @@ public final class House extends Element {
         return new Peasant(spawnPos, this);
     }
 
-
-
     //si on fait le système qui fait les nouvelles maisons alors ici ca va un peu poser problème
     public boolean canGenerate(){
         ensure(
@@ -78,8 +75,6 @@ public final class House extends Element {
         );
         return peasantEntered == peasantGenerated;
     }
-
-
 
     public void enter(boolean hasEatenEnough){
         peasantEntered++;

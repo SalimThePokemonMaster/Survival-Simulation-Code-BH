@@ -2,8 +2,6 @@ package main.java.utilities;
 
 import java.util.Objects;
 
-import static main.java.utilities.Preconditions.require;
-
 public class Coordinates {
 
     int x;
@@ -20,10 +18,6 @@ public class Coordinates {
 
     public double distanceTo(Coordinates that){
         return Math.sqrt(Math.pow(this.x - that.x,2) + Math.pow(this.y - that.y, 2));
-    }
-
-    public boolean isNext(Coordinates that){
-        return distanceTo(that) <= 1 && !isSuperposed(that);
     }
 
     public boolean isSuperposed(Coordinates that){
@@ -48,11 +42,6 @@ public class Coordinates {
 
     public int getY() {
         return y;
-    }
-
-    public void move(int x2, int y2){
-        x += x2;
-        y += y2;
     }
 
     public Coordinates translated(int x2, int y2){

@@ -26,6 +26,7 @@ import main.java.components.eatable.Eatable;
 import main.java.utilities.Coordinates;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * Main class of {@code CodeBHSimulation}, allowing to launch the final program
@@ -35,8 +36,6 @@ import java.util.*;
  */
 public final class Main extends Application {
     private static final int TILE_SIZE = 20;
-    private static final int MAP_WIDTH = 60;
-    private static final int MAP_HEIGHT = 40;
     private static final int DELTA_TIME_MS = 20;
     private boolean pause;
 
@@ -53,11 +52,11 @@ public final class Main extends Application {
         GridPane mapGrid = new GridPane();
         mapGrid.setAlignment(Pos.CENTER);
 
-        Group[][] panes = new Group[MAP_HEIGHT][MAP_WIDTH];
+        Group[][] panes = new Group[Game.LINES][Game.COLUMNS];
 
 
-        for (int y = 0; y < MAP_HEIGHT; y++) {
-            for (int x = 0; x < MAP_WIDTH; x++) {
+        for (int y = 0; y < Game.LINES; y++) {
+            for (int x = 0; x < Game.COLUMNS; x++) {
                 StackPane tile = createTile();
                 Group children = new Group();
                 tile.getChildren().add(children);
@@ -75,7 +74,6 @@ public final class Main extends Application {
 
         CheckBox pauseBox = new CheckBox("Pause");
         pauseBox.setOnAction(e -> pause = pauseBox.isSelected());
-
 
         infoLabel.setWrapText(true);
 
@@ -165,7 +163,7 @@ public final class Main extends Application {
     }
 
     private void update(Group[][] cases, Game game){
-        infoLabel.setText("Current generation : " + game.getDay());
+        infoLabel.setText("Current generation : " + game.getCurrentDay() + "\n" + "Total population: " + game.getTotalPopulation());
         clear(cases);
         game.update();
         updateBackground(cases, game.getPeriod());
@@ -179,8 +177,8 @@ public final class Main extends Application {
             case HADES -> Color.RED;
         };
 
-        for (int y = 0; y < MAP_HEIGHT; y++) {
-            for (int x = 0; x < MAP_WIDTH; x++) {
+        for (int y = 0; y < Game.LINES; y++) {
+            for (int x = 0; x < Game.COLUMNS; x++) {
                 StackPane tile = (StackPane) cases[y][x].getParent();
                 Rectangle background = (Rectangle) tile.getChildren().getFirst();
                 background.setFill(color);
@@ -189,24 +187,17 @@ public final class Main extends Application {
     }
 
     private void clear(Group[][] cases){
-        for (int y = 0; y < MAP_HEIGHT; y++) {
-            for (int x = 0; x < MAP_WIDTH; x++) {
+        for (int y = 0; y < Game.LINES; y++) {
+            for (int x = 0; x < Game.COLUMNS; x++) {
                 cases[y][x].getChildren().clear();
             }
         }
     }
     private void draw(Group[][] cases, Game game){
-        game.getPeasant().forEach(x -> {
-            cases[x.getCoordinates().getY()][x.getCoordinates().getX()].getChildren().add(
-                    getDrawing(x)
-            );
-        });
-        game.getAllEatable().forEach(x ->
-                cases[x.getCoordinates().getY()][x.getCoordinates().getX()].getChildren().add(
-                        getDrawing(x)
-                )
-        );
-        game.getAllHouses().forEach(x -> {
+        Stream.concat(
+                Stream.concat(game.getPeasant().stream(), game.getAllEatable().stream()
+            ), game.getAllHouses().stream()
+        ).forEach(x -> {
             cases[x.getCoordinates().getY()][x.getCoordinates().getX()].getChildren().add(
                     getDrawing(x)
             );

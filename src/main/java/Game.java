@@ -5,7 +5,6 @@ import main.java.components.Peasant;
 import main.java.components.eatable.Carrot;
 import main.java.components.eatable.Eatable;
 import main.java.utilities.Coordinates;
-import main.java.utilities.Utilities;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -14,15 +13,21 @@ import java.util.stream.Collectors;
 import static main.java.utilities.Preconditions.ensure;
 
 public class Game {
-    private Set<House> allHouses;
-    private Set<Eatable> allEatable;
+
+    // Game Generation
+    private Period period = Period.HELIOS;
+    private final Set<House> allHouses = generateHouses();
+    private final Set<Eatable> allEatable = generateEatables(allHouses);
+
+    // Game Constants
+    public final static int LINES = 40;
+    public final static int COLUMNS = 60;
+
+    // Game mutable
+    private int currentDay;
     private Set<Peasant> peasantSet = new HashSet<>();
 
-    private Period period;
-
-    private int day;
-
-    public boolean newLoggerDay;
+    public boolean newLoggerDay; // ne devrait pas faire partis des attributs...
 
     public enum Period {
         HELIOS,
@@ -31,21 +36,8 @@ public class Game {
     }
 
     int currentCycle = 0;
-    final static int CYCLES_BEFORE_GENERATING = 1;
+    final static int CYCLES_BEFORE_GENERATING = 3;
     final static int CYCLES_BEFORE_SLEEPING = 100;
-
-
-    public Game(Set<House> houses, Set<Eatable> eatables, Period period) {
-        this.allHouses = houses;
-        this.allEatable = eatables;
-        this.period = period;
-    }
-
-    public Game(){
-        Set<House> houses = generateHouses();
-        Set<Eatable> eatables = generateEatables(houses);
-        this(houses, eatables, Period.HELIOS);
-    }
 
     public Set<House> getAllHouses() {
         return allHouses;
@@ -63,8 +55,12 @@ public class Game {
         return peasantSet;
     }
 
-    public int getDay() {
-        return day;
+    public int getCurrentDay() {
+        return currentDay;
+    }
+
+    public int getTotalPopulation() {
+        return peasantSet.size();
     }
 
     private static Set<House> generateHouses(){
@@ -97,10 +93,10 @@ public class Game {
         int x,y;
         Coordinates d;
         do{
-            x = ThreadLocalRandom.current().nextInt(0, Utilities.MAP_WIDTH);
-            y = ThreadLocalRandom.current().nextInt(1, Utilities.MAP_HEIGTH - 1);
-            ensure(x >= 0 && x <= Utilities.MAP_WIDTH, "The X coordinate chosen for a carrot respawn is out of bound : " + x);
-            ensure(y >= 0 && y < Utilities.MAP_HEIGTH, "The Y coordinate chosen for a carrot respawn is out of bound : " + y);
+            x = ThreadLocalRandom.current().nextInt(0, COLUMNS);
+            y = ThreadLocalRandom.current().nextInt(1, LINES - 1);
+            ensure(x >= 0 && x <= COLUMNS, "The X coordinate chosen for a carrot respawn is out of bound : " + x);
+            ensure(y >= 0 && y < LINES, "The Y coordinate chosen for a carrot respawn is out of bound : " + y);
             d = new Coordinates(x, y);
             Coordinates finalD = d;
             b = allHouses.stream().noneMatch(k -> k.getCoordinates().isSuperposed(finalD));
@@ -149,14 +145,14 @@ public class Game {
                         period = Period.HADES;
                     } else {
                         period = Period.HELIOS;
-                        day++;
+                        currentDay++;
                         newLoggerDay = true;
                     }
                 }
             }
 
             case HADES -> {
-                day++;
+                currentDay++;
                 newLoggerDay = true;
             }
         }
@@ -165,9 +161,5 @@ public class Game {
 
     public boolean clock(int currentCycle, int cyclePeriod){
         return currentCycle % cyclePeriod == 0;
-    }
-
-    public int getTotalPopulation(){
-        return allHouses.stream().map(House::getToGenerateThisDay).reduce(Integer::sum).get();
     }
 }

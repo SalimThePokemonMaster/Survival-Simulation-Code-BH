@@ -1,20 +1,13 @@
 package main.java;
 
 import main.java.components.Peasant;
-import main.java.components.House;
-import main.java.utilities.Coordinates;
-import main.java.utilities.Utilities;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Logger {
     public static void main(String[] args) {
@@ -38,7 +31,7 @@ public class Logger {
                 .append("Population      : " + game.getTotalPopulation()).append("\n")
                 .append("Quantity to eat : " + Peasant.QUANTITY_TO_EAT).append("\n\n")
                 .append("Eatables        : " + game.getAllEatable().size()).append("\n")
-                .append("Map Size        : " + Utilities.MAP_WIDTH + " x " + Utilities.MAP_HEIGTH).append("\n")
+                .append("Map Size        : " + Game.COLUMNS + " x " + Game.LINES).append("\n")
                 .append("Period          : " + game.getPeriod().toString()).append("\n\n")
 
                 .append("--- SYSTEM INFO --------------------------------------------\n\n")
@@ -51,11 +44,11 @@ public class Logger {
         double populationRecorder = game.getTotalPopulation();
         double CpopulationRecorder = game.getTotalPopulation();
 
-        while (game.getDay() < 100){
+        while (game.getCurrentDay() < 100){
             game.update();
             if(game.newLoggerDay){
                 game.newLoggerDay = false;
-                log.append("                        Day ").append(game.getDay()).append("\n")
+                log.append("                        Day ").append(game.getCurrentDay()).append("\n")
                         .append("============================================================\n\n")
 
                         .append("Period          : ").append(game.getPeriod().toString()).append("\n")
@@ -75,7 +68,7 @@ public class Logger {
 
 
                 Clog.append("[Day ")
-                        .append(game.getDay())
+                        .append(game.getCurrentDay())
                         .append("] Period=")
                         .append(game.getPeriod())
                         .append(" Pop=")
