@@ -4,7 +4,6 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -20,6 +19,7 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import main.java.Game;
 import main.java.components.*;
 import main.java.components.eatable.Carrot;
 import main.java.components.eatable.Eatable;
@@ -110,7 +110,7 @@ public final class Main extends Application {
         Eatable e2 = new Carrot(Coordinates.posOf(33, 0));
         Eatable e3 = new Carrot(Coordinates.posOf(15, 15));
         Eatable e4 = new Carrot(Coordinates.posOf(15, 3));
-        Eatable e5 = new Carrot(Coordinates.posOf(50, 25));
+        Eatable e5 = new Carrot(Coordinates.posOf(49, 25));
         Eatable e6 = new Carrot(Coordinates.posOf(25, 13));
         Eatable e7  = new Carrot(Coordinates.posOf(12, 8));
         Eatable e8  = new Carrot(Coordinates.posOf(30, 22));
@@ -151,7 +151,8 @@ public final class Main extends Application {
                 e26, e27, e28, e29, e30, e31, e32, e33, e34, e35,
                 e36, e37, e38, e39, e40);
 
-        Game game = new Game(houses, eatables, Game.Period.HELIOS);
+        //Game game = new Game(houses, eatables, Game.Period.ARTEMIS);
+        Game game = new Game();
 
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.millis(DELTA_TIME_MS), e -> {
@@ -164,10 +165,10 @@ public final class Main extends Application {
     }
 
     private void update(Group[][] cases, Game game){
-        infoLabel.setText("Current generation : " + game.generation);
+        infoLabel.setText("Current generation : " + game.getDay());
         clear(cases);
         game.update();
-        updateBackground(cases, game.period);
+        updateBackground(cases, game.getPeriod());
         draw(cases, game);
     }
 
@@ -196,17 +197,17 @@ public final class Main extends Application {
     }
     private void draw(Group[][] cases, Game game){
         game.getPeasant().forEach(x -> {
-            cases[x.coordinates.getY()][x.coordinates.getX()].getChildren().add(
+            cases[x.getCoordinates().getY()][x.getCoordinates().getX()].getChildren().add(
                     getDrawing(x)
             );
         });
-        game.allEatable.forEach(x ->
-                cases[x.coordinates.getY()][x.coordinates.getX()].getChildren().add(
+        game.getAllEatable().forEach(x ->
+                cases[x.getCoordinates().getY()][x.getCoordinates().getX()].getChildren().add(
                         getDrawing(x)
                 )
         );
-        game.allHouses.forEach(x -> {
-            cases[x.coordinates.getY()][x.coordinates.getX()].getChildren().add(
+        game.getAllHouses().forEach(x -> {
+            cases[x.getCoordinates().getY()][x.getCoordinates().getX()].getChildren().add(
                     getDrawing(x)
             );
         });

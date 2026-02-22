@@ -1,5 +1,6 @@
 package main.java.components;
 
+import main.java.Game;
 import main.java.components.eatable.Eatable;
 import main.java.utilities.*;
 
@@ -12,17 +13,20 @@ public class Peasant extends Element implements Movable {
     private final House myHouse;
     private boolean isAsleep;
 
+    public final static int QUANTITY_TO_EAT = 2;
+
     public Peasant(Coordinates coordinates, House house){
         this.coordinates = coordinates;
         this.state = CharacterState.NORMAL;
         this.myHouse = house;
         this.eaten = 0;
+        this.isAsleep = false;
     }
 
     private Optional<Eatable> target(Set<Eatable> allEatable){
         return allEatable.stream()
                 .reduce((a, b) -> {
-                    if (coordinates.distanceBetween(a.coordinates) <= coordinates.distanceBetween(b.coordinates)) {
+                    if (coordinates.distanceTo(a.coordinates) <= coordinates.distanceTo(b.coordinates)) {
                         return a;
                     } else {
                         return b;
@@ -34,7 +38,7 @@ public class Peasant extends Element implements Movable {
         switch (state){
             case NORMAL -> {
                 if(actualPeriod == Game.Period.HELIOS){
-                    if(Math.random() > 0.4){
+                    if(Math.random() > 0.2){
                         Optional<Eatable> targetO = target(allEatable);
 
                         if (targetO.isPresent()){
@@ -53,7 +57,7 @@ public class Peasant extends Element implements Movable {
                         }
 
                     } else {
-
+                        state = CharacterState.IDLE;
                     }
 
                 } else {
@@ -68,19 +72,13 @@ public class Peasant extends Element implements Movable {
                 }
             }
             case IDLE -> {
-                if(actualPeriod == Game.Period.HELIOS){
-                    if(Math.random() > 0.3) {
-                        state = CharacterState.NORMAL;
-                    }
-                } else {
-                    state = CharacterState.NORMAL;
-                }
+                state = CharacterState.NORMAL;
             }
         }
     }
 
     public boolean hasEatenEnough(){
-        return eaten > 1;
+        return eaten >= QUANTITY_TO_EAT;
     }
 
     public boolean isAsleep() {

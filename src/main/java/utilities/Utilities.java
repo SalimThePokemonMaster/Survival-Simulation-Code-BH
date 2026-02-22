@@ -5,14 +5,7 @@ import java.util.List;
 
 public interface Utilities {
 
-//    public static boolean isFree(Coordinates toGo,  List<Constituent> allConstituent){
-//        for(Constituent constituent : allConstituent){
-//            if(constituent.coordinates == toGo){
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
-
+    public final static int MAP_WIDTH = 60;
+    public final static int MAP_HEIGTH = 40;
 
 }

@@ -1,0 +1,123 @@
+============================================================
+                SIMULATION ENGINE — STARTUP
+============================================================
+
+Simulation ID   : 2026-02-22T14:39:01.575416600
+Launch Time     : 2026-02-22T14:39:01.575416600
+Status          : INITIALIZING
+
+--- WORLD SNAPSHOT -----------------------------------------
+
+Houses          : 10
+Population      : 63
+Quantity to eat : 2
+
+Eatables        : 300
+Map Size        : 60 x 40
+Period          : HELIOS
+
+--- SYSTEM INFO --------------------------------------------
+
+Thread          : main
+Java Version    : 22.0.2
+============================================================
+[Day 1] Period=HELIOS Pop=92 DeltaPop=46.03174603174603%
+[Day 2] Period=HELIOS Pop=115 DeltaPop=25.0%
+[Day 3] Period=HELIOS Pop=127 DeltaPop=10.434782608695652%
+[Day 4] Period=HELIOS Pop=140 DeltaPop=10.236220472440944%
+[Day 5] Period=HELIOS Pop=148 DeltaPop=5.714285714285714%
+[Day 6] Period=HELIOS Pop=147 DeltaPop=-0.6756756756756757%
+[Day 7] Period=HELIOS Pop=150 DeltaPop=2.0408163265306123%
+[Day 8] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 9] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 10] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 11] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 12] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 13] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 14] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 15] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 16] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 17] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 18] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 19] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 20] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 21] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 22] Period=HELIOS Pop=147 DeltaPop=-2.0%
+[Day 23] Period=HELIOS Pop=148 DeltaPop=0.6802721088435374%
+[Day 24] Period=HELIOS Pop=146 DeltaPop=-1.3513513513513513%
+[Day 25] Period=HELIOS Pop=150 DeltaPop=2.73972602739726%
+[Day 26] Period=HELIOS Pop=148 DeltaPop=-1.3333333333333335%
+[Day 27] Period=HELIOS Pop=150 DeltaPop=1.3513513513513513%
+[Day 28] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 29] Period=HELIOS Pop=148 DeltaPop=-1.3333333333333335%
+[Day 30] Period=HELIOS Pop=150 DeltaPop=1.3513513513513513%
+[Day 31] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 32] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 33] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 34] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 35] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 36] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 37] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 38] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 39] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 40] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 41] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 42] Period=HELIOS Pop=148 DeltaPop=-1.3333333333333335%
+[Day 43] Period=HELIOS Pop=150 DeltaPop=1.3513513513513513%
+[Day 44] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 45] Period=HELIOS Pop=148 DeltaPop=-1.3333333333333335%
+[Day 46] Period=HELIOS Pop=150 DeltaPop=1.3513513513513513%
+[Day 47] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 48] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 49] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 50] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 51] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 52] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 53] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 54] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 55] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 56] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 57] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 58] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 59] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 60] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 61] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 62] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 63] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 64] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 65] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 66] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 67] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 68] Period=HELIOS Pop=147 DeltaPop=-2.0%
+[Day 69] Period=HELIOS Pop=150 DeltaPop=2.0408163265306123%
+[Day 70] Period=HELIOS Pop=148 DeltaPop=-1.3333333333333335%
+[Day 71] Period=HELIOS Pop=150 DeltaPop=1.3513513513513513%
+[Day 72] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 73] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 74] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 75] Period=HELIOS Pop=148 DeltaPop=-1.3333333333333335%
+[Day 76] Period=HELIOS Pop=150 DeltaPop=1.3513513513513513%
+[Day 77] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 78] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 79] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 80] Period=HELIOS Pop=148 DeltaPop=-1.3333333333333335%
+[Day 81] Period=HELIOS Pop=146 DeltaPop=-1.3513513513513513%
+[Day 82] Period=HELIOS Pop=150 DeltaPop=2.73972602739726%
+[Day 83] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 84] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 85] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 86] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 87] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 88] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 89] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 90] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 91] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 92] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 93] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 94] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 95] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 96] Period=HELIOS Pop=148 DeltaPop=-1.3333333333333335%
+[Day 97] Period=HELIOS Pop=150 DeltaPop=1.3513513513513513%
+[Day 98] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 99] Period=HELIOS Pop=150 DeltaPop=0.0%
+[Day 100] Period=HELIOS Pop=148 DeltaPop=-1.3333333333333335%

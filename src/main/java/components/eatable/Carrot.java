@@ -1,6 +1,5 @@
 package main.java.components.eatable;
 
-import main.java.components.Peasant;
 import main.java.utilities.Coordinates;
 
 public class Carrot extends Eatable {

@@ -2,6 +2,8 @@ package main.java.utilities;
 
 import java.util.Objects;
 
+import static main.java.utilities.Preconditions.require;
+
 public class Coordinates {
 
     int x;
@@ -16,12 +18,12 @@ public class Coordinates {
         return new Coordinates(x, y);
     }
 
-    public double distanceBetween(Coordinates that){
+    public double distanceTo(Coordinates that){
         return Math.sqrt(Math.pow(this.x - that.x,2) + Math.pow(this.y - that.y, 2));
     }
 
     public boolean isNext(Coordinates that){
-        return distanceBetween(that) <= 1 && !isSuperposed(that);
+        return distanceTo(that) <= 1 && !isSuperposed(that);
     }
 
     public boolean isSuperposed(Coordinates that){

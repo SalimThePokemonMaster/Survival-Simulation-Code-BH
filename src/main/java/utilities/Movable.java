@@ -2,9 +2,13 @@ package main.java.utilities;
 
 import java.util.stream.Stream;
 
+import static main.java.utilities.Preconditions.require;
+
 public interface Movable {
 
     default Coordinates rush(Coordinates myCoordinates, Coordinates toGo){
+        require(toGo.getX() >= 0 && toGo.getX() <= Utilities.MAP_WIDTH);
+        require(toGo.getY() >= 0 && toGo.getY() <= Utilities.MAP_HEIGTH);
         return myCoordinates.translated(
                 Stream.of(
                         new Coordinates(0, 0),
@@ -14,7 +18,7 @@ public interface Movable {
                         new Coordinates(0, -1)
                 ).reduce(
                         (a, b) -> {
-                            if (myCoordinates.translated(a).distanceBetween(toGo) <= myCoordinates.translated(b).distanceBetween(toGo)) {
+                            if (myCoordinates.translated(a).distanceTo(toGo) <= myCoordinates.translated(b).distanceTo(toGo)) {
                                 return a;
                             } else {
                                 return b;
