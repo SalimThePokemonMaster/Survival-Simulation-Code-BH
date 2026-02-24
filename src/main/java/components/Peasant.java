@@ -9,10 +9,10 @@ import java.util.Set;
 public class Peasant extends Element implements Movable {
     public enum CharacterState {
         NORMAL,
-        IDLE,
+        IDLE
     }
     // Constants
-    public final static int QUANTITY_TO_EAT = 2;
+    public final static int QUANTITY_TO_EAT = 3;
 
     // Peasant track
     private CharacterState state;

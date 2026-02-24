@@ -14,20 +14,21 @@ public final class House extends Element {
     private int peasantGenerated;
     private int toGenerateThisDay;
 
-    private final static int MAX_CAPACITY  = 10;
+    private final int MAX_CAPACITY;
     private final static int DEFAULT_CREATION_GENERATED  = 2;
     private final Coordinates spawnPos;
 
-    public House(Coordinates coordinates, int toGenerateThisDay){
+    public House(Coordinates coordinates, int toGenerateThisDay, int max_capacity){
         require(coordinates.getX() >= 0 && coordinates.getX() <= Game.COLUMNS);
         require(coordinates.getY() > 0 && coordinates.getY() <= Game.COLUMNS);
         this.coordinates = coordinates;
         this.toGenerateThisDay = toGenerateThisDay;
         this.spawnPos = coordinates.translated(0,1);
+        this.MAX_CAPACITY = max_capacity;
     }
 
     public House(Coordinates coordinates){
-        this(coordinates, DEFAULT_CREATION_GENERATED);
+        this(coordinates, DEFAULT_CREATION_GENERATED, 10);
     }
 
     public int getPeasantEntered() {
@@ -48,7 +49,7 @@ public final class House extends Element {
 
 
     public void setToGenerateThisDay(int toGenerate){
-        toGenerateThisDay = toGenerate;
+        toGenerateThisDay = Math.min(MAX_CAPACITY, toGenerate);
         peasantEntered = 0;
         peasantGenerated = 0;
         peasantHasEatenEnough = 0;
@@ -59,7 +60,6 @@ public final class House extends Element {
         return new Peasant(spawnPos, this);
     }
 
-    //si on fait le système qui fait les nouvelles maisons alors ici ca va un peu poser problème
     public boolean canGenerate(){
         ensure(
                 peasantGenerated <= MAX_CAPACITY,

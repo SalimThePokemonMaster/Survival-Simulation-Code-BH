@@ -23,6 +23,9 @@ public class Game {
     public final static int LINES = 40;
     public final static int COLUMNS = 60;
 
+    public final static int EATABLE_RATIO = 20;
+    public final static int MAX_PEASANT_PER_HOUSE = 10;
+
     // Game mutable
     private int currentDay;
     private Set<Peasant> peasantSet = new HashSet<>();
@@ -69,7 +72,7 @@ public class Game {
         for(int i = 0; i < n; i++){
             Coordinates b = generateCoordinates(a);
             int n2 = ThreadLocalRandom.current().nextInt(2, 11);
-            House house = new House(b, n2);
+            House house = new House(b, n2, MAX_PEASANT_PER_HOUSE);
             a.add(house);
         }
         ensure(a.size() == n, "The outcome of the house generating process is unsuccessfull.");
@@ -78,7 +81,7 @@ public class Game {
 
     private static Set<Eatable> generateEatables(Set<House> allHouses){
         Set<Eatable> a = new HashSet<>();
-        int n = allHouses.size() * 3 * 10;
+        int n = allHouses.size() * EATABLE_RATIO;
         for(int i = 0; i < n; i++){
             Coordinates b = generateCoordinates(allHouses);
             Carrot carrot = new Carrot(b);

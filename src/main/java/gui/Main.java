@@ -31,8 +31,8 @@ import java.util.stream.Stream;
 /**
  * Main class of {@code CodeBHSimulation}, allowing to launch the final program
  *
- * @author Sami Kabbaj (393773)
- * @author Salim Chaoui El Faiz (396504)
+ * @author Sami Kabbaj
+ * @author Salim Chaoui El Faiz
  */
 public final class Main extends Application {
     private static final int TILE_SIZE = 20;
@@ -95,68 +95,15 @@ public final class Main extends Application {
     }
 
     private Timeline getTimeline(Group[][] panes) {
-        House h1 = new House(new Coordinates(23, 16), 2);
-        House h2 = new House(new Coordinates(45, 25), 2);
-        House h3 = new House(new Coordinates(38, 37), 2);
-        House h4 = new House(new Coordinates(3, 4), 4);
-        House h5 = new House(new Coordinates(14, 26), 8);
-        House h6 = new House(new Coordinates(35, 27), 3);
-        House h7 = new House(new Coordinates(45, 3), 8);
-        Set<House> houses = Set.of(h1, h2, h3, h4, h5, h6, h7);
-
-        Eatable e1 = new Carrot(Coordinates.posOf(25, 20));
-        Eatable e2 = new Carrot(Coordinates.posOf(33, 0));
-        Eatable e3 = new Carrot(Coordinates.posOf(15, 15));
-        Eatable e4 = new Carrot(Coordinates.posOf(15, 3));
-        Eatable e5 = new Carrot(Coordinates.posOf(49, 25));
-        Eatable e6 = new Carrot(Coordinates.posOf(25, 13));
-        Eatable e7  = new Carrot(Coordinates.posOf(12, 8));
-        Eatable e8  = new Carrot(Coordinates.posOf(30, 22));
-        Eatable e9  = new Carrot(Coordinates.posOf(5, 27));
-        Eatable e10 = new Carrot(Coordinates.posOf(18, 9));
-        Eatable e11 = new Carrot(Coordinates.posOf(34, 35));
-        Eatable e12 = new Carrot(Coordinates.posOf(57, 38));
-        Eatable e13 = new Carrot(Coordinates.posOf(27, 14));
-        Eatable e14 = new Carrot(Coordinates.posOf(9, 3));
-        Eatable e15 = new Carrot(Coordinates.posOf(21, 37));
-        Eatable e16 = new Carrot(Coordinates.posOf(4, 12));
-        Eatable e17 = new Carrot(Coordinates.posOf(22, 5));
-        Eatable e18 = new Carrot(Coordinates.posOf(47, 30));
-        Eatable e19 = new Carrot(Coordinates.posOf(13, 18));
-        Eatable e20 = new Carrot(Coordinates.posOf(39, 7));
-        Eatable e21 = new Carrot(Coordinates.posOf(6, 34));
-        Eatable e22 = new Carrot(Coordinates.posOf(28, 16));
-        Eatable e23 = new Carrot(Coordinates.posOf(50, 2));
-        Eatable e24 = new Carrot(Coordinates.posOf(17, 29));
-        Eatable e25 = new Carrot(Coordinates.posOf(31, 11));
-        Eatable e26 = new Carrot(Coordinates.posOf(9, 21));
-        Eatable e27 = new Carrot(Coordinates.posOf(44, 14));
-        Eatable e28 = new Carrot(Coordinates.posOf(20, 33));
-        Eatable e29 = new Carrot(Coordinates.posOf(2, 9));
-        Eatable e30 = new Carrot(Coordinates.posOf(36, 24));
-        Eatable e31 = new Carrot(Coordinates.posOf(14, 6));
-        Eatable e32 = new Carrot(Coordinates.posOf(48, 19));
-        Eatable e33 = new Carrot(Coordinates.posOf(25, 35));
-        Eatable e34 = new Carrot(Coordinates.posOf(11, 27));
-        Eatable e35 = new Carrot(Coordinates.posOf(33, 4));
-        Eatable e36 = new Carrot(Coordinates.posOf(7, 15));
-        Eatable e37 = new Carrot(Coordinates.posOf(41, 28));
-        Eatable e38 = new Carrot(Coordinates.posOf(18, 2));
-        Eatable e39 = new Carrot(Coordinates.posOf(29, 31));
-        Eatable e40 = new Carrot(Coordinates.posOf(45, 10));
-        Set<Eatable> eatables = Set.of(e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13,
-                e14, e15, e16, e17, e18, e19, e20, e21, e22, e23, e24, e25,
-                e26, e27, e28, e29, e30, e31, e32, e33, e34, e35,
-                e36, e37, e38, e39, e40);
-
-        //Game game = new Game(houses, eatables, Game.Period.ARTEMIS);
         Game game = new Game();
 
         Timeline timeline = new Timeline(
-                new KeyFrame(Duration.millis(DELTA_TIME_MS), e -> {
-                        if (!pause) update(panes, game);
-
-                })
+                new KeyFrame(
+                        Duration.millis(DELTA_TIME_MS),
+                        e -> {
+                            if (!pause) update(panes, game);
+                        }
+                )
         );
         timeline.setCycleCount(Animation.INDEFINITE);
         return timeline;
@@ -193,6 +140,7 @@ public final class Main extends Application {
             }
         }
     }
+
     private void draw(Group[][] cases, Game game){
         Stream.concat(
                 Stream.concat(game.getPeasant().stream(), game.getAllEatable().stream()
@@ -203,6 +151,7 @@ public final class Main extends Application {
             );
         });
     }
+
     private Node getDrawing(Element x){
         return
             switch (x) {
@@ -212,6 +161,7 @@ public final class Main extends Application {
                 default -> throw new IllegalStateException();
             };
     }
+
     private StackPane createTile() {
         Rectangle background = new Rectangle(TILE_SIZE, TILE_SIZE);
         background.setFill(Color.BEIGE);
@@ -257,6 +207,4 @@ public final class Main extends Application {
         peasant.setFill(Color.DARKBLUE);
         return peasant;
     }
-
-
 }
