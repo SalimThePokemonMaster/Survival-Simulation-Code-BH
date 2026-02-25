@@ -18,12 +18,9 @@ public final class Logger {
 
     static StringBuilder log = new StringBuilder();
     static StringBuilder Clog = new StringBuilder();
-    static String timestamp = LocalDateTime.now().toString();;
-    static String threadName = Thread.currentThread().getName();
-    static String javaVersion = System.getProperty("java.version");
-    static Game game = new Game();
-
-    private record Pair(double a,  double b){}
+    static final LocalDateTime timestamp = LocalDateTime.now();
+    static final String threadName = Thread.currentThread().getName();
+    static final String javaVersion = System.getProperty("java.version");
 
     public Logger() {}
 
@@ -34,27 +31,25 @@ public final class Logger {
         initializer(game);
 
         double populationRecorder = getTotalPopulation(game);
-        double CpopulationRecorder = getTotalPopulation(game);
 
         while (game.getCurrentDay() < 100){
             game.update();
-            Pair k = update(game, populationRecorder, CpopulationRecorder);
-            populationRecorder = k.a();
-            CpopulationRecorder = k.b();
+            double k = update(game, populationRecorder);
+            populationRecorder = k;
         }
         write();
     }
 
-    public static int getTotalPopulation(Game game){
+    static public int getTotalPopulation(Game game){
         return game.getAllHouses().stream().map(House::getToGenerateThisDay).reduce(Integer::sum).get();
     }
 
-    public static void initializer(Game game) {
+    static public void initializer(Game game) {
         log.append("============================================================\n")
                 .append("                SIMULATION ENGINE — STARTUP\n")
                 .append("============================================================\n\n")
-                .append("Simulation ID   : ").append(timestamp).append("\n")
-                .append("Launch Time     : ").append(timestamp).append("\n")
+                .append("Simulation ID   : ").append(timestamp.toString()).append("\n")
+                .append("Launch Time     : ").append(timestamp.toString()).append("\n")
                 .append("Status          : INITIALIZING\n\n")
 
                 .append("--- WORLD SNAPSHOT -----------------------------------------\n\n")
@@ -83,7 +78,7 @@ public final class Logger {
 
         Clog.setLength(0);
         Clog.append("# Simulation Metadata\n")
-            .append("# simulation_id=").append(timestamp).append("\n")
+            .append("# simulation_id=").append(timestamp.toString()).append("\n")
             .append("# houses_count=").append(game.getAllHouses().size()).append("\n")
             .append("# max_peasant_per_house=").append(MAX_PEASANT_PER_HOUSE).append("\n")
             .append("# eatables_ratio=").append(EATABLE_RATIO).append("\n")
@@ -119,9 +114,9 @@ public final class Logger {
     }
 
 
-    public static Pair update(Game game, double populationRecorder, double CpopulationRecorder){
+    static public double update(Game game, double populationRecorder){
         double newPopulationRecorder = populationRecorder;
-        double newCpopulationRecorder = CpopulationRecorder;
+        double newCpopulationRecorder = populationRecorder;
         if(game.newLoggerDay){
             game.newLoggerDay = false;
             log.append("                        Day ").append(game.getCurrentDay()).append("\n")
@@ -143,10 +138,10 @@ public final class Logger {
 
 
             double deltaPopulationPercent = 0 ;
-            if(CpopulationRecorder == 0){
+            if(populationRecorder == 0){
                 deltaPopulationPercent = 0; Clog.append(" DeltaPop=0%").append("\n");
             } else {
-                deltaPopulationPercent =  (getTotalPopulation(game) - CpopulationRecorder) / CpopulationRecorder * 100.0;
+                deltaPopulationPercent =  (getTotalPopulation(game) - populationRecorder) / populationRecorder * 100.0;
             }
             newCpopulationRecorder = getTotalPopulation(game);
 
@@ -161,19 +156,18 @@ public final class Logger {
 
 
         }
-        return new Pair(newPopulationRecorder, newCpopulationRecorder);
+        return newPopulationRecorder;
     }
 
-    public static void write(){
-        LocalDateTime now = LocalDateTime.now();
+    static public void write(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
-        String safeTimestamp = now.format(formatter);
+        String safeTimestamp = timestamp.format(formatter);
 
         writer(Path.of("resources/logs/verbal/" + safeTimestamp + ".txt"), log.toString());
         writer(Path.of("resources/logs/data_exploitable/" + safeTimestamp + ".txt"), Clog.toString());
     }
 
-    private static void writer(Path filePath, String message){
+    static private void writer(Path filePath, String message){
         try {
             Files.writeString(filePath, message, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {

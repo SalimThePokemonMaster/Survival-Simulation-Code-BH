@@ -30,7 +30,7 @@ public class Game {
     private int currentDay;
     private Set<Peasant> peasantSet = new HashSet<>();
 
-    public boolean newLoggerDay; // ne devrait pas faire partis des attributs...
+    public boolean newLoggerDay;
 
     public enum Period {
         HELIOS,
