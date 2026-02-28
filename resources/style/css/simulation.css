@@ -1,0 +1,171 @@
+/* =========================================
+   VINTAGE MECHANICAL RED SWITCH - FIXED
+   ========================================= */
+
+.sim-button {
+
+    /* Double couche pour éviter débordements */
+    -fx-background-color:
+        #5a1f1f, /* couche externe (anneau sombre) */
+        linear-gradient(to bottom,
+            #ff8f8f 0%,
+            #e35d5d 45%,
+            #c74444 55%,
+            #a83232 100%
+        );
+
+    -fx-background-insets: 0, 3; /* espace interne propre */
+    -fx-background-radius: 14, 11;
+
+    -fx-text-fill: white;
+
+    /* Police plus mécanique */
+    -fx-font-family: "Consolas";
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+    -fx-letter-spacing: 1px;
+
+    -fx-padding: 10 20 16 20;
+
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 8, 0.4, 0, 6);
+
+    -fx-cursor: hand;
+}
+
+
+/* =========================
+   HOVER
+   ========================= */
+
+.sim-button:hover {
+
+    -fx-background-color:
+        #5a1f1f,
+        linear-gradient(to bottom,
+            #ff9d9d 0%,
+            #f06a6a 45%,
+            #d44d4d 55%,
+            #b63a3a 100%
+        );
+}
+
+
+/* =========================
+   PRESSED (enfoncé)
+   ========================= */
+
+.sim-button:pressed {
+
+    -fx-translate-y: 5;
+
+    -fx-background-color:
+        #4a1818,
+        linear-gradient(to bottom,
+            #b63a3a 0%,
+            #992d2d 100%
+        );
+
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.8), 4, 0.4, 0, 2);
+}
+
+
+/* =========================
+   FOCUS propre (anneau interne)
+   ========================= */
+
+.sim-button:focused {
+
+    -fx-background-color:
+        white,
+        #5a1f1f,
+        linear-gradient(to bottom,
+            #ff8f8f 0%,
+            #e35d5d 45%,
+            #c74444 55%,
+            #a83232 100%
+        );
+
+    -fx-background-insets: 0, 2, 5;
+    -fx-background-radius: 16, 14, 11;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.sim-stats-box {
+    -fx-background-color:
+        #5a1f1f, /* couche externe */
+        linear-gradient(to bottom, #cd3f64 0%, #9d3656 100%); /* gradient interne */
+    -fx-background-insets: 0, 2; /* couche interne légèrement décalée */
+    -fx-background-radius: 10, 7; /* coins réduits */
+    -fx-border-color: white;
+    -fx-border-width: 2;
+    -fx-border-radius: 8;
+    -fx-padding: 6px;
+    -fx-spacing: 4px;
+    -fx-alignment: top-left;
+    -fx-max-width: 150px;
+}
+
+.sim-label {
+    -fx-text-fill: white;
+    -fx-font-family: "Consolas";
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-background-color:
+        #5a1f1f, /* couche externe */
+        rgba(128, 0, 51, 0.3); /* couche interne transparente */
+    -fx-background-insets: 0, 1; /* évite débordement */
+    -fx-background-radius: 6, 4;
+    -fx-border-color: white;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+    -fx-padding: 3px 5px;
+    -fx-wrap-text: true;
+    -fx-max-width: 140px;
+}
+
+.sim-title {
+    -fx-font-family: "Consolas";
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #fff;
+    -fx-background-color:
+        #5a1f1f,
+        #803;
+    -fx-background-insets: 0, 2;
+    -fx-background-radius: 10, 7;
+    -fx-border-color: white;
+    -fx-border-width: 2;
+    -fx-border-radius: 8;
+    -fx-padding: 5px;
+    -fx-max-width: 150px;
+}

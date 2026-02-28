@@ -27,3 +27,13 @@ Thumbs.db
 # =========================
 hs_err_pid*
 replay_pid*
+
+# =========================
+# Generated logs
+# =========================
+resources/logs/data_exploitable/*
+resources/logs/verbal/*
+
+# Keep directories (optional but recommended)
+!resources/logs/data_exploitable/.gitkeep
+!resources/logs/verbal/.gitkeep

@@ -3,6 +3,8 @@ package main.java.logger;
 import main.java.Game;
 import main.java.components.House;
 import main.java.components.Peasant;
+import main.java.components.eatable.Eatable;
+import main.java.utilities.Movable;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,16 +16,36 @@ import java.time.format.DateTimeFormatter;
 import static main.java.Game.EATABLE_RATIO;
 import static main.java.Game.MAX_PEASANT_PER_HOUSE;
 
+/**
+ * Final class representing a {@code Logger}. This {@code Logger} is meant to write the logs of a simulation in two formats,
+ * a more verbal one for people lecture and a second one for data extraction and to use those data.
+ * ALl the logs are registered in the {@code logs} directory in {@code resources}.
+ *
+ * The {@code Logger} has a main function to make this file possible to be launched. That allows to make a simulation of 100
+ * days without using the UI, being consequently incredibly faster.
+ *
+ * @author Sami Kabbaj
+ * @author Salim Chaoui El Faiz
+ *
+ */
 public final class Logger {
 
+    //StringBuilder of the verbal log text
     static StringBuilder log = new StringBuilder();
+    //StringBuilder of the data log text
     static StringBuilder Clog = new StringBuilder();
+
+    //Constants at the creation of the logger
     static final LocalDateTime timestamp = LocalDateTime.now();
     static final String threadName = Thread.currentThread().getName();
     static final String javaVersion = System.getProperty("java.version");
 
-    public Logger() {}
-
+    /**
+     * {@code Logger} entry point. Creates a {@link Game} and initialises the {@code Logger}, then simulates, plays 100
+     * days of simulation and recovers the logs in the log files.
+     *
+     * @param args command-line arguments (not used).
+     */
     public static void main(String[] args) {
 
         Game game = new Game();
@@ -34,17 +56,32 @@ public final class Logger {
 
         while (game.getCurrentDay() < 100){
             game.update();
-            double k = update(game, populationRecorder);
-            populationRecorder = k;
+            populationRecorder = update(game, populationRecorder);
         }
         write();
     }
 
+    /**
+     * Utility function that helps to count the total population inf the simulation but, considering the special
+     * usage of the {@code Logger}, it has a special way to count that is meant to work during the night ({@code ARTEMIS})
+     * when all {@link Peasant} are asleep.
+     *
+     * @param game is the simulation {@link Game}.
+     * @return the total population is the given {@code game}.
+     */
     static public int getTotalPopulation(Game game){
         return game.getAllHouses().stream().map(House::getToGenerateThisDay).reduce(Integer::sum).get();
     }
 
+    /**
+     * Initialises the logs with their headers.
+     *
+     * @param game is the simulation {@link Game}.
+     */
     static public void initializer(Game game) {
+        /*
+                    Verbal log header
+         */
         log.append("============================================================\n")
                 .append("                SIMULATION ENGINE — STARTUP\n")
                 .append("============================================================\n\n")
@@ -76,6 +113,9 @@ public final class Logger {
                 .append("Java Version    : ").append(javaVersion).append("\n")
                 .append("============================================================\n");
 
+        /*
+                    Data log header
+         */
         Clog.setLength(0);
         Clog.append("# Simulation Metadata\n")
             .append("# simulation_id=").append(timestamp.toString()).append("\n")
@@ -96,6 +136,9 @@ public final class Logger {
 
         Clog.append("day,period,total_population,delta_population_percent\n");
 
+        /*
+                Verbal log day 0 initialised
+         */
         log.append("                        Day ").append(game.getCurrentDay()).append("\n")
                 .append("============================================================\n\n")
 
@@ -105,6 +148,9 @@ public final class Logger {
                 .append("Total Population: ").append(getTotalPopulation(game)).append("\n")
                 .append("============================================================\n");
 
+        /*
+                Data log day 0 initialised
+         */
         Clog.append(game.getCurrentDay())
                 .append(",")
                 .append(game.getPeriod())
@@ -113,12 +159,24 @@ public final class Logger {
                 .append("\n");
     }
 
-
+    /**
+     * Update function that checks if it is a new day and if so, records all necessary data in the {@code Logger}
+     * texts.
+     *
+     * @param game is the simulation {@link Game}.
+     * @param populationRecorder is the actual total population before the new day.
+     * @return the new total population.
+     */
     static public double update(Game game, double populationRecorder){
         double newPopulationRecorder = populationRecorder;
-        double newCpopulationRecorder = populationRecorder;
         if(game.newLoggerDay){
+
+            //Disables the game attribute that informs the logger that it is a new day
             game.newLoggerDay = false;
+
+            /*
+                        Verbal log new day data
+             */
             log.append("                        Day ").append(game.getCurrentDay()).append("\n")
                     .append("============================================================\n")
 
@@ -136,15 +194,17 @@ public final class Logger {
 
             log.append("============================================================\n");
 
-
-            double deltaPopulationPercent = 0 ;
+            //Computes the variation of population between last day and the new one
+            double deltaPopulationPercent;
             if(populationRecorder == 0){
                 deltaPopulationPercent = 0; Clog.append(" DeltaPop=0%").append("\n");
             } else {
                 deltaPopulationPercent =  (getTotalPopulation(game) - populationRecorder) / populationRecorder * 100.0;
             }
-            newCpopulationRecorder = getTotalPopulation(game);
 
+            /*
+                        Data log new day data
+             */
             Clog.append(game.getCurrentDay())
                     .append(",")
                     .append(game.getPeriod())
@@ -159,6 +219,9 @@ public final class Logger {
         return newPopulationRecorder;
     }
 
+    /**
+     * Writing function that saves the logs int the corresponding files.
+     */
     static public void write(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
         String safeTimestamp = timestamp.format(formatter);
@@ -167,11 +230,17 @@ public final class Logger {
         writer(Path.of("resources/logs/data_exploitable/" + safeTimestamp + ".txt"), Clog.toString());
     }
 
+    /**
+     * Utility function that writes a given {@link String} into a file.
+     *
+     * @param filePath is the file path to write in.
+     * @param message is the text we want to write.
+     */
     static private void writer(Path filePath, String message){
         try {
             Files.writeString(filePath, message, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
-            throw new RuntimeException("Error during the writing process in the file", e);
+            throw new RuntimeException("Error during the writing process in the file.", e);
         }
     }
 }
