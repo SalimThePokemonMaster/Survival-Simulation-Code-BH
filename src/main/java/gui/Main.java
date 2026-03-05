@@ -2,7 +2,6 @@ package main.java.gui;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
-import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -12,12 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.SplitPane;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
@@ -29,8 +23,7 @@ import main.java.components.*;
 import main.java.components.eatable.Carrot;
 import main.java.logger.Logger;
 
-import java.awt.*;
-import java.net.URL;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
@@ -45,49 +38,59 @@ public final class Main extends Application {
     private static final int DELTA_TIME_MS = 50;
     private boolean pause = true;
 
+    private final BorderPane borderPane = new BorderPane();
+    private final Label infoLabel = new Label();
+    private final Label nbHouse = new Label();
+    private final Label maxPeasantPerHouse = new Label();
+    private final Label eatablePerHouse = new Label();
+    private final Label currentDay = new Label();
+    private final Label currentPeriod = new Label();
+    private final Label currentPop = new Label();
+
     public static void main(String[] args) {
         System.out.println("CodeBHSimulation ~ Done with <3 by Sami & Salim");
         launch(args);
     }
 
-    Label infoLabel = new Label();
-    Label nbHouse = new Label();
-    Label maxPeasantPerHouse = new Label();
-    Label eatablePerHouse = new Label();
-    Label currentDay = new Label();
-    Label currentPeriod = new Label();
-    Label currentPop = new Label();
-
-    private BorderPane borderPane;
-
-    //private boolean hadesLaunched = false;
-    private GridPane mapGrid;
-
-    private StackPane centerPane; // champ de classe
-
-
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
 
+        // ************************************
+        // Setting the grid for the game
+        // ************************************
 
-
-        this.mapGrid = new GridPane();
+        GridPane mapGrid = new GridPane();
         mapGrid.setAlignment(Pos.CENTER);
         mapGrid.setBorder(Border.stroke(Color.BLACK));
         mapGrid.setBorder(new Border(
                 new BorderStroke(
-                        Color.BLACK,                       // couleur de la bordure
-                        BorderStrokeStyle.SOLID,           // style de bordure
-                        new CornerRadii(5),               // rayon des coins (ici 10 pixels)
-                        new BorderWidths(3)                // largeur de la bordure
+                        Color.WHITESMOKE,
+                        BorderStrokeStyle.SOLID,
+                        new CornerRadii(5),
+                        new BorderWidths(3)
                 )
         ));
+
+        // ************************************
+        // Setting the right panel for the logs
+        // ************************************
+
+        BorderPane rightPanel = new BorderPane();
+        rightPanel.setPadding(new Insets(20));
+
+        // ************************************
+        // Adding each pixel in a group for performance
+        // ************************************
+
         Group[][] panes = new Group[Game.LINES][Game.COLUMNS];
-
-
         for (int y = 0; y < Game.LINES; y++) {
             for (int x = 0; x < Game.COLUMNS; x++) {
                 StackPane tile = createTile();
+
+                tile.setMinSize(TILE_SIZE, TILE_SIZE);
+                tile.setMaxSize(TILE_SIZE, TILE_SIZE);
+                tile.setPrefSize(TILE_SIZE, TILE_SIZE);
+
                 Group children = new Group();
                 tile.getChildren().add(children);
                 panes[y][x] = children;
@@ -95,16 +98,20 @@ public final class Main extends Application {
             }
         }
 
+        // ************************************
+        // Creating a timeline to update the game automatically
+        // ************************************
+
         Timeline timeline = getTimeline(panes);
         timeline.play();
 
-        // --- Panel droit ---
-        BorderPane rightPanel = new BorderPane();
-        rightPanel.setPadding(new Insets(20));
+        // ************************************
+        // Adding a pause button
+        // ************************************
 
         Button pauseButton = new Button("Start the game");
         pauseButton.setOnAction(
-                e -> {
+                _ -> {
                     pause = !pause;
                     if(pause){
                         pauseButton.setText("Play");
@@ -113,31 +120,31 @@ public final class Main extends Application {
                     }
                 }
         );
-        pauseButton.setMaxWidth(Double.MAX_VALUE); // prend toute la largeur
-        pauseButton.setPrefHeight(50);
+        pauseButton.getStyleClass().add("sim-button");
+        pauseButton.setMaxWidth(Double.MAX_VALUE);
+        pauseButton.setPrefHeight(55);
         rightPanel.setBottom(pauseButton);
 
-        infoLabel.setWrapText(true);
-        infoLabel.setText("Simulation statistics");
+        // ************************************
+        // Adding the labels to the right panel
+        // ************************************
 
-        //ici c'est les données que on écrit
         VBox statsBox = new VBox(10);
         statsBox.setAlignment(Pos.TOP_LEFT);
 
+        infoLabel.setWrapText(true);
+        infoLabel.setText("Simulation statistics");
+        infoLabel.getStyleClass().add("sim-title");
         statsBox.getChildren().add(infoLabel);
 
         VBox staticStats = new VBox(5);
-        statsBox.setAlignment(Pos.TOP_LEFT);
+        staticStats.setAlignment(Pos.TOP_LEFT);
+        statsBox.getChildren().add(staticStats);
+        staticStats.getStyleClass().add("sim-stats-box");
 
         VBox dynamicStats = new VBox(5);
         dynamicStats.setAlignment(Pos.TOP_LEFT);
-
-        statsBox.getChildren().add(staticStats);
         statsBox.getChildren().add(dynamicStats);
-
-
-
-        staticStats.getStyleClass().add("sim-stats-box");
         dynamicStats.getStyleClass().add("sim-stats-box");
 
         nbHouse.getStyleClass().add("sim-label");
@@ -147,60 +154,41 @@ public final class Main extends Application {
         currentPeriod.getStyleClass().add("sim-label");
         currentPop.getStyleClass().add("sim-label");
 
-        infoLabel.getStyleClass().add("sim-title");
-
-
         rightPanel.setTop(statsBox);
         BorderPane.setAlignment(statsBox, Pos.TOP_LEFT);
 
+        // ************************************
+        // Adding the text for the labels
+        // ************************************
 
+        addTextTo(staticStats, nbHouse);
+        addTextTo(staticStats, maxPeasantPerHouse);
+        addTextTo(staticStats, eatablePerHouse);
+        addTextTo(dynamicStats, currentDay);
+        addTextTo(dynamicStats, currentPeriod);
+        addTextTo(dynamicStats, currentPop);
 
-        //---------------------------------------------
+        // ************************************
+        // Adding everything to the borderPane
+        // ************************************
 
-        nbHouse.setWrapText(true);
-        staticStats.getChildren().add(nbHouse); //house count
-        maxPeasantPerHouse.setWrapText(true);
-        staticStats.getChildren().add(maxPeasantPerHouse); //maxpeasant per house
-        eatablePerHouse.setWrapText(true);
-        staticStats.getChildren().add(eatablePerHouse); //eatableration
-        currentDay.setWrapText(true);
-        dynamicStats.getChildren().add(currentDay); //day
-        currentPeriod.setWrapText(true);
-        dynamicStats.getChildren().add(currentPeriod); // period
-        currentPop.setWrapText(true);
-        dynamicStats.getChildren().add(currentPop); //totalpopulation
-
-
-
-
-        // --- SplitPane horizontal ---
-        this.borderPane = new BorderPane();
-        borderPane.setBackground(Background.fill(Color.LIGHTGREY ));
-
+        borderPane.setBackground(Background.fill(Color.LIGHTGREY));
         borderPane.setRight(rightPanel);
-        //borderPane.setCenter(mapGrid);
-        // Dans start() au lieu de borderPane.setCenter(mapGrid);
-        centerPane = new StackPane(mapGrid);
-        borderPane.setCenter(centerPane);
+        borderPane.setCenter(new StackPane(mapGrid));
 
         mapGrid.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
-
         mapGrid.prefWidthProperty().bind(borderPane.widthProperty().multiply(0.1));
         mapGrid.prefHeightProperty().bind(borderPane.heightProperty().multiply(0.1));
 
-
-
+        // ************************************
+        // Displays the whole simulation
+        // ************************************
 
         Scene scene = new Scene(borderPane);
         scene.setFill(Color.rgb(193, 225, 193));
-
         scene.getStylesheets().add(
-                getClass().getResource("/style/css/simulation.css").toExternalForm()
+                Objects.requireNonNull(getClass().getResource("/style/css/simulation.css")).toExternalForm()
         );
-
-        pauseButton.getStyleClass().add("sim-button");
-        pauseButton.setMaxWidth(Double.MAX_VALUE);
-        pauseButton.setPrefHeight(55);
 
         primaryStage.setWidth(1200);
         primaryStage.setHeight(700);
@@ -211,10 +199,15 @@ public final class Main extends Application {
         primaryStage.show();
     }
 
+    /**
+     * Utility method that renders the current logs into the right panel.
+     *
+     * @param game represents the current {@link Game}
+     */
     private void setDataText(Game game){
         nbHouse.setText("Number of houses: " + game.getAllHouses().size());
         maxPeasantPerHouse.setText("Max peasant per house: " + Game.MAX_PEASANT_PER_HOUSE);
-        eatablePerHouse.setText("Eatable generated per house: " + Game.EATABLE_RATIO);
+        eatablePerHouse.setText("Eatables generated per house: " + Game.EATABLE_RATIO);
         currentDay.setText("Day: " + game.getCurrentDay());
         currentPeriod.setText("Period: " + game.getPeriod());
         if(game.newLoggerDay){
@@ -222,26 +215,30 @@ public final class Main extends Application {
         }
     }
 
-    private Timeline getTimeline(Group[][] panes) {
+    /**
+     * Utility method that creates a timeline for the update function
+     *
+     * @param cases represents the pixels
+     */
+    private Timeline getTimeline(Group[][] cases) {
         Game game = new Game();
         setDataText(game);
         currentPop.setText("Total population: " + Logger.getTotalPopulation(game));
 
         Logger logger = new Logger();
-        logger.initializer(game);
+        Logger.initializer(game);
         logger.write();
         AtomicReference<Double> populationRecorder = new AtomicReference<>((double) logger.getTotalPopulation(game));
 
         Timeline timeline = new Timeline(
                 new KeyFrame(
                         Duration.millis(DELTA_TIME_MS),
-                        e -> {
+                        _ -> {
                             if (!pause){
-                                update(panes, game);
+                                update(cases, game);
                                 logger.update(game, populationRecorder.get());
                                 populationRecorder.set((double) logger.getTotalPopulation(game));
                                 logger.write();
-
                             }
                         }
                 )
@@ -250,6 +247,12 @@ public final class Main extends Application {
         return timeline;
     }
 
+    /**
+     * Utility method that updates the whole simulation.
+     *
+     * @param cases represents the pixels
+     * @param game represents the current {@link main.java.Game}
+     */
     private void update(Group[][] cases, Game game){
         clear(cases);
         game.update();
@@ -258,7 +261,12 @@ public final class Main extends Application {
         draw(cases, game);
     }
 
-
+    /**
+     * Utility method that updates the background.
+     *
+     * @param cases represents the pixels
+     * @param period represents the {@link main.java.Game.Period}
+     */
     private void updateBackground(Group[][] cases, Game.Period period) {
         Color tileColor;
         Color generalColor;
@@ -267,9 +275,7 @@ public final class Main extends Application {
             case HADES -> { tileColor = Color.RED; generalColor = Color.DARKRED; }
             default -> { tileColor = Color.BEIGE; generalColor = Color.LIGHTGREY; }
         }
-
         borderPane.setBackground(new Background(new BackgroundFill(generalColor, null, null)));
-
         for (int y = 0; y < Game.LINES; y++) {
             for (int x = 0; x < Game.COLUMNS; x++) {
                 StackPane tile = (StackPane) cases[y][x].getParent();
@@ -279,6 +285,11 @@ public final class Main extends Application {
         }
     }
 
+    /**
+     * Utility method that clears the map.
+     *
+     * @param cases represents the pixels
+     */
     private void clear(Group[][] cases){
         for (int y = 0; y < Game.LINES; y++) {
             for (int x = 0; x < Game.COLUMNS; x++) {
@@ -287,27 +298,44 @@ public final class Main extends Application {
         }
     }
 
+    /**
+     * Utility method that draws each pixel
+     *
+     * @param cases the group of all pixels
+     * @param game the current game
+     */
     private void draw(Group[][] cases, Game game){
         Stream.concat(
-                Stream.concat(game.getPeasant().stream(), game.getAllEatable().stream()
-            ), game.getAllHouses().stream()
-        ).forEach(x -> {
-            cases[x.getCoordinates().getY()][x.getCoordinates().getX()].getChildren().add(
-                    getDrawing(x)
-            );
-        });
+                Stream.concat(game.getAllEatable().stream(), game.getPeasant().stream()
+                    ), game.getAllHouses().stream()
+        ).forEach(x -> cases[x.getCoordinates().getY()][x.getCoordinates().getX()].getChildren().add(
+                getDrawing(x)
+        ));
     }
 
+    /**
+     * Utility method that displays an element.
+     *
+     * @return a {@link Node} representing a {@link Element}
+     */
     private Node getDrawing(Element x){
-        return
-            switch (x) {
-                case Peasant p -> createPeasant();
-                case Carrot c -> createCarrot();
-                case House h -> createHouse();
-                default -> throw new IllegalStateException();
-            };
+        Group g = new Group();
+
+        switch (x) {
+            case Peasant _ -> g.getChildren().add(createPeasant());
+            case Carrot _ -> g.getChildren().add(createCarrot());
+            case House _ -> g.getChildren().add(createHouse());
+            default -> throw new IllegalStateException();
+        }
+
+        return g;
     }
 
+    /**
+     * Utility method for the display.
+     *
+     * @return a {@link StackPane} representing a pixel
+     */
     private StackPane createTile() {
         Rectangle background = new Rectangle(TILE_SIZE, TILE_SIZE);
         background.setFill(Color.BEIGE);
@@ -317,25 +345,64 @@ public final class Main extends Application {
         return new StackPane(background);
     }
 
-    private Rectangle createPeasant() {
-        Rectangle peasant = new Rectangle(0.6*TILE_SIZE, 0.6*TILE_SIZE);
-        peasant.setFill(Color.BLUE);
-        return peasant;
+    /**
+     * Utility method for the display.
+     *
+     * @return a {@link Group} representing a {@link Peasant}
+     */
+    private Group createPeasant() {
+        double coef = 1;
+
+        Rectangle body = new Rectangle(-0.15 * TILE_SIZE * coef, -0.1 * TILE_SIZE * coef,
+                0.3 * TILE_SIZE * coef, 0.4 * TILE_SIZE * coef);
+        Circle head = new Circle(0, -0.35 * TILE_SIZE * coef, 0.12 * TILE_SIZE * coef);
+        Rectangle hatBase = new Rectangle(-0.18 * TILE_SIZE * coef, -0.48 * TILE_SIZE * coef,
+                0.36 * TILE_SIZE * coef, 0.08 * TILE_SIZE * coef);
+        Rectangle hatTop = new Rectangle(-0.1 * TILE_SIZE * coef, -0.56 * TILE_SIZE * coef,
+                0.2 * TILE_SIZE * coef, 0.12 * TILE_SIZE * coef);
+        Rectangle leftArm = new Rectangle(-0.28 * TILE_SIZE * coef, -0.05 * TILE_SIZE * coef,
+                0.14 * TILE_SIZE * coef, 0.07 * TILE_SIZE * coef);
+        Rectangle rightArm = new Rectangle(0.14 * TILE_SIZE * coef, -0.05 * TILE_SIZE * coef,
+                0.14 * TILE_SIZE * coef, 0.07 * TILE_SIZE * coef);
+        Rectangle leftLeg = new Rectangle(-0.12 * TILE_SIZE * coef, 0.28 * TILE_SIZE * coef,
+                0.1 * TILE_SIZE * coef, 0.18 * TILE_SIZE * coef);
+        Rectangle rightLeg = new Rectangle(0.02 * TILE_SIZE * coef, 0.28 * TILE_SIZE * coef,
+                0.1 * TILE_SIZE * coef, 0.18 * TILE_SIZE * coef);
+
+        body.setFill(Color.SADDLEBROWN);
+        head.setFill(Color.BEIGE);
+        hatBase.setFill(Color.DARKRED);
+        hatTop.setFill(Color.DARKRED);
+        leftArm.setFill(Color.SADDLEBROWN);
+        rightArm.setFill(Color.SADDLEBROWN);
+        leftLeg.setFill(Color.BLACK);
+        rightLeg.setFill(Color.BLACK);
+
+        return new Group(body, head, hatBase, hatTop, leftArm, rightArm, leftLeg, rightLeg);
     }
 
-    private Rectangle createHouse() {
+    /**
+     * Utility method for the display.
+     *
+     * @return a {@link Group} representing a {@link House}
+     */
+    private Group createHouse() {
         Rectangle house = new Rectangle(TILE_SIZE, TILE_SIZE);
         house.setFill(Color.DARKBLUE);
-        return house;
+        return new Group(house);
     }
 
+    /**
+     * Utility method for the display.
+     *
+     * @return a {@link Group} representing a {@link Carrot}
+     */
     public static Group createCarrot() {
-        // Corps de la carotte
         Circle body = new Circle(0.3*TILE_SIZE);
         body.setFill(Color.ORANGE);
 
-        // Feuilles (étoile verte plus petite)
         Polygon leaves = new Polygon();
+        leaves.setFill(Color.GREEN);
         double centerX = 0;
         double centerY = 0;
         double outerRadius = 0.2*TILE_SIZE;
@@ -348,12 +415,16 @@ public final class Main extends Application {
             double y = centerY + Math.sin(angle - Math.PI / 2) * radius;
             leaves.getPoints().addAll(x, y);
         }
-
-        leaves.setFill(Color.GREEN);
-
         return new Group(body, leaves);
     }
 
-
-
+    /**
+     * Utility method that adds the label to the VBox.
+     * @param to where to add the text
+     * @param text the text to add
+     */
+    private void addTextTo(VBox to, Label text){
+        text.setWrapText(true);
+        to.getChildren().add(text);
+    }
 }
