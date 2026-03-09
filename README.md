@@ -28,6 +28,39 @@ The concept is inspired by this video from CodeBH YouTube channel : https://yout
 ## (●ˇ∀ˇ●) Usage
 Just clone the repo, add javaFX 21 to your project and run the `Main` or the `Logger` and that's it! ✪ ω ✪
 
+
+---
+## （*＾-＾*）How the simulation works ? 
+When you launch the `Main`, the simulation will initialize automatically, and you can launch it with the corresponding 
+button. If you do so, the simulation will start and will be displayed on real time on the UI. You can stop/pause the simulation 
+at any time with the same corresponding button.
+
+During this simulation, the corresponding number of houses generated is random (from 2 to 15) and each house can contain
+a maximum of 10 peasants. At the initialisation, the base number of peasants in a house os also generated randomly between 
+2 and 10. The position of each house is also generated randomly all over the map excluding the last row, this exclusion is 
+necessary to ensure the spawn coordinate from the house is in the map. 
+
+During each day, at each tick a peasant goes out form his house and tries to find food, to eat a carrot. The carrot dpawn randomly and when
+eaten they respawn automatically on a random cell during the next tick. To eat a carrot, the peasant has to go on the carrot's 
+cell and then eats it in 1 tick. To survive the day, a peasant has to eat at least 3 carrots and get back to his house 
+when the night (ARTEMIS period) starts. 
+
+How works the day/night cycle ? 
+A day (HELIOS) lasts 100 ticks, when it finishes, the period passes to night (ARTEMIS). During the night, all peasants stop 
+chasing carrots, and they run to their houses to go to sleep. Then, the peasants that have not eaten enough die and the others
+reproduce. Peasants can reproduce only in the same house, and they can't be more than the max number of peasants in a house. 
+
+What is HADES ? 
+The Hades period is reached only if no peasants are alive anymore, it's a dead game !
+
+---
+
+Everything ahs been covered, how the simulation works, what you can do, what you can't, as your only live interaction is
+pause/play any parametrization is made through the constants in the code that you are free to change to see how will 
+these simulations evolve (maybe with more houses, fewer carrots, longer days...). 
+Moreover, each simulation is registered automatically in log files in the resources directory even if the simulation is 
+closed non expectedly (the registration occurs while the simulation is done). 
+
 ---
 ## (☞ﾟヮﾟ)☞  Project Structure
 
